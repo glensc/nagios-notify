@@ -1,0 +1,20 @@
+X-Mailer: Nagios/$VERSION$
+Message-Id: $SERVICEDESC$.$DATE$@$HOSTALIAS$.nagios
+In-Reply-To: $SERVICEDESC$.$DATE$@$HOSTALIAS$.nagios
+To: "$CONTACTALIAS$" <$CONTACTEMAIL$>
+Subject: ** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **
+
+***** Nagios/$VERSION$ *****
+
+Notification Type: $NOTIFICATIONTYPE$
+
+Service: $SERVICEDESC$
+Host: $HOSTALIAS$
+Address: $HOSTADDRESS$
+State: $SERVICESTATE$
+
+Date/Time: $LONGDATETIME$
+
+Additional Info:
+
+$SERVICEOUTPUT$
