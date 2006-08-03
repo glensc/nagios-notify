@@ -1,5 +1,5 @@
 package = nagios-notify
-version = 0.9
+version = 0.9.1
 prefix = /usr
 sysconfdir = /etc/nagios
 sbindir = $(prefix)/sbin
@@ -17,6 +17,6 @@ dist:
 	rm -rf $(package)-$(version)
 	svn up
 	install -d $(package)-$(version)
-	cp -a nagios-notify templates $(package)-$(version)
+	cp -a Makefile nagios-notify templates $(package)-$(version)
 	tar --exclude=.svn --exclude='*~' -cjf $(package)-$(version).tar.bz2 $(package)-$(version)
 	rm -rf $(package)-$(version)
