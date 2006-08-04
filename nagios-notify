@@ -2,6 +2,7 @@
 # $Id: nagios-notify.sh,v 1.3 2006/08/03 12:39:22 glen Exp $
 #
 # Template based Nagios notify script.
+# Requires: sed, awk
 #
 # Author: Elan Ruusamäe <glen@pld-linux.org>
 # Date: 2006-08-03
