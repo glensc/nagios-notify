@@ -13,6 +13,7 @@ prog="${0##*/}"
 
 # Substutute Nagios $VAR$-s (which are exported to environment by Nagios) from template.
 template_subst() {
+	local tmpl="$1"
 	awk 'BEGIN {
 		for (var in ENVIRON) {
 			if (substr(var, 1, length("NAGIOS_")) == "NAGIOS_") {
