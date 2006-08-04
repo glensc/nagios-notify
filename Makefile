@@ -1,5 +1,5 @@
 package = nagios-notify
-version = 0.9.2
+version = 0.9.3
 prefix = /usr
 sysconfdir = /etc/nagios
 sbindir = $(prefix)/sbin
@@ -10,9 +10,11 @@ all:
 
 install:
 	install -d $(DESTDIR)$(sbindir)
-	install nagios-notify $(DESTDIR)$(sbindir)
+	install $(package) $(DESTDIR)$(sbindir)
 	install -d $(DESTDIR)$(templatedir)
 	cp -a templates/*.tmpl $(DESTDIR)$(templatedir)
+	install -d $(DESTDIR)$(pluginconfdir)
+	cp -a $(package).cfg $(DESTDIR)$(pluginconfdir)
 
 dist:
 	rm -rf $(package)-$(version)
