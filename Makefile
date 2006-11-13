@@ -1,5 +1,5 @@
 package = nagios-notify
-version = 0.9.4
+version = 0.9.5
 prefix = /usr
 sysconfdir = /etc/nagios
 sbindir = $(prefix)/sbin
