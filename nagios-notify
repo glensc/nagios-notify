@@ -12,7 +12,7 @@ templatedir='/etc/nagios/templates'
 export NAGIOS_DATADIR='/usr/share/nagios'
 prog="${0##*/}"
 
-# Substutute Nagios $VAR$-s (which are exported to environment by Nagios) from template.
+# Substutute Nagios $VAR$-s (which are exported to environment by Nagios) inside template.
 template_subst() {
 	local tmpl="$1"
 	awk '
