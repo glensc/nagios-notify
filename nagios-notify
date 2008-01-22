@@ -10,6 +10,7 @@
 #
 
 templatedir='/etc/nagios/templates'
+export NAGIOS_DATADIR='/usr/share/nagios'
 prog="${0##*/}"
 
 # Substutute Nagios $VAR$-s (which are exported to environment by Nagios) from template.
@@ -25,7 +26,27 @@ template_subst() {
 			}
 		}
 		exit;
-	}' | sed -f - $tmpl
+	}' | sed -f - $tmpl | perl -e '
+		use strict;
+		use MIME::Base64;
+
+		sub cat {
+			open(FH, shift) or die;
+			local $/ = undef;
+			local $_ = <FH>;
+			close FH;
+			return $_;
+		}
+
+		sub base64_subst {
+			encode_base64(cat(shift));
+		}
+
+		while (<>) {
+			s/\$\(base64:(\S+)\)/base64_subst($1)/eg;
+			print;
+		}
+	'
 }
 
 if [ -z "$NAGIOS_STATUSDATAFILE" ]; then
