@@ -1,1 +1,11 @@
-<a href="https://nagios/nagios/cgi-bin/extinfo.cgi?type=2&amp;host=$HOSTNAME$&amp;service=$SERVICEDESC$">$SERVICEDESC$/$HOSTNAME$</a> <strong>$NOTIFICATIONTYPE$</strong>: $SERVICESTATE$ <kbd>$SERVICEOUTPUT$</kbd>
+<a href="$CGIURL$/cmd.cgi?cmd_typ=7&amp;host=$HOSTNAME$&amp;service=$SERVICEDESC$">
+<img width="20" height="20" border="0" title="Re-schedule Next Service Check"
+ src="data:image/gif;base64,$(base64:$DATADIR$/images/delay.gif)" />
+</a>
+<a href="$CGIURL$/cmd.cgi?cmd_typ=56&amp;host=$HOSTNAME$&amp;service=$SERVICEDESC$">
+<img width="20" height="20" border="0" title="Schedule downtime for this service"
+ src="data:image/gif;base64,$(base64:$DATADIR$/images/downtime.gif)" />
+</a>
+
+ <a href="$CGIURL$/extinfo.cgi?type=2&amp;host=$HOSTNAME$&amp;service=$SERVICEDESC$">$SERVICEDESC$/$HOSTNAME$</a>
+ <strong>$NOTIFICATIONTYPE$</strong>: $SERVICESTATE$ <kbd>$SERVICEOUTPUT$</kbd>
