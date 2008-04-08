@@ -49,7 +49,10 @@ template_subst() {
 	' $tmpl
 }
 
-if [ -z "$NAGIOS_STATUSDATAFILE" ]; then
+
+if [ "${NAGIOS_STATUSDATAFILE+X}" = X ]; then
+	NAGIOS_STATUSDATAFILE=${NAGIOS_STATUSDATAFILE:-/var/lib/nagios/status.dat}
+else
 	echo >&2 "$prog: This program must be ran from Nagios."
 	exit 1
 fi
