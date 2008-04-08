@@ -1,8 +1,8 @@
 #!/bin/sh
-# $Id: nagios-notify.sh,v 1.3 2006/08/03 12:39:22 glen Exp $
+# $Id: nagios-notify 9696 2008-04-08 11:10:15Z glen $
 #
 # Template based Nagios notify script.
-# Requires: awk
+# Requires: awk, base64 (coreutils)
 #
 # Author: Elan Ruusamäe <glen@pld-linux.org>
 # License: Same as Nagios (GPL v2)
@@ -50,14 +50,14 @@ template_subst() {
 }
 
 
-if [ "${NAGIOS_STATUSDATAFILE+X}" = X ]; then
+if [ "${NAGIOS_STATUSDATAFILE+set}" = set ]; then
 	NAGIOS_STATUSDATAFILE=${NAGIOS_STATUSDATAFILE:-/var/lib/nagios/status.dat}
 else
 	echo >&2 "$prog: This program must be ran from Nagios."
 	exit 1
 fi
 
-# extract nagios version from status file
+# extract Nagios version from status file
 export NAGIOS_VERSION=$(awk -F= '/version=/{print $2}' $NAGIOS_STATUSDATAFILE)
 
 tmpl="$templatedir/$1.tmpl"
