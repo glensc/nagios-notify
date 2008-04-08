@@ -1,10 +1,10 @@
 #!/bin/sh
-# $Id: nagios-notify 9696 2008-04-08 11:10:15Z glen $
+# $Id: nagios-notify 9697 2008-04-08 11:10:46Z glen $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
 #
-# Author: Elan Ruusam‰e <glen@pld-linux.org>
+# Author: Elan Ruusam√§e <glen@pld-linux.org>
 # License: Same as Nagios (GPL v2)
 #
 
