@@ -2,15 +2,15 @@ package = nagios-notify
 version = 0.9.5
 prefix = /usr
 sysconfdir = /etc/nagios
-sbindir = $(prefix)/sbin
+tooldir = $(prefix)/lib/nagios
 templatedir = $(sysconfdir)/templates
 pluginconfdir = $(sysconfdir)/plugins
 
 all:
 
 install:
-	install -d $(DESTDIR)$(sbindir)
-	install $(package) $(DESTDIR)$(sbindir)
+	install -d $(DESTDIR)$(tooldir)
+	install $(package) $(DESTDIR)$(tooldir)
 	install -d $(DESTDIR)$(templatedir)
 	cp -a templates/*.tmpl $(DESTDIR)$(templatedir)
 	install -d $(DESTDIR)$(pluginconfdir)
