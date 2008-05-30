@@ -1,0 +1,6 @@
+
+Installation:
+
+- copy nagios-notify to /usr/lib/nagios (make sure it's executable)
+- copy templates/* to /etc/nagios/templates
+- use sample commands from nagios-notify.cfg to define your notifications
