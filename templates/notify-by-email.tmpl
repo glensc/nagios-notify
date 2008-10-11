@@ -2,7 +2,7 @@ X-Mailer: Nagios/$VERSION$
 Content-Type: text/plain; charset="iso8859-1"
 Message-Id: $SERVICEDESC$.$DATE$@$HOSTALIAS$.nagios
 In-Reply-To: $SERVICEDESC$.$DATE$@$HOSTALIAS$.nagios
-To: "$CONTACTALIAS$" <$CONTACTEMAIL$>
+To: "$(encode_mime_header:iso8859-1,$CONTACTALIAS$)" <$CONTACTEMAIL$>
 Subject: ** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **
 
 ***** Nagios/$VERSION$ *****
