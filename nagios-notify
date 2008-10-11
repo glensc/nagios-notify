@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 9899 2008-10-11 15:00:04Z glen $
+# $Id: nagios-notify 9902 2008-10-11 17:13:34Z glen $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -53,6 +53,29 @@ template_subst() {
 		return "=?" charset "?b?" base64_string(data) "?="
 	}
 
+	# urlencode
+	function urlencode(data) {
+		split("1 2 3 4 5 6 7 8 9 a b c d e f", hextab, " ")
+		hextab[0] = 0
+		for (i = 1; i <= 255; i++) {
+			ord[sprintf("%c", i) ""] = i + 0
+		}
+
+		n = length(data)
+		res = ""
+		for (i = 1; i <= n; i++) {
+		   	c = substr(data, i, 1);
+			if (!match(c, /[A-Za-z0-9._-]/)) {
+				lo = ord[c] % 16
+				hi = int(ord[c] / 16);
+				c = "%" hextab[hi] hextab[lo]
+			}
+			res = res c
+		}
+
+		return res
+	}
+
 	{
 		# replace environ variables
 		for (var in ENVIRON) {
@@ -81,6 +104,14 @@ template_subst() {
 			charset = substr(params, 1, index(params, ",") - 1)
 			data = substr(params, index(params, ",") + 1)
 			$0 = left encode_mime_header(charset, data) right;
+		}
+		# $(urlencode:data)
+		if (match($0, /\$\(urlencode:(.*)\)/)) {
+			pos = length("$(urlencode:")
+			data = substr($0, RSTART + pos, RLENGTH - pos - 1);
+			left = substr($0, 0, RSTART);
+			right = substr($0, RSTART + RLENGTH);
+			$0 = left urlencode(data) right;
 		}
 
 		# print out
