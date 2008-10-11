@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 9902 2008-10-11 17:13:34Z glen $
+# $Id: nagios-notify 9903 2008-10-11 19:39:17Z glen $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -17,7 +17,7 @@ template_subst() {
 	local tmpl="$1"
 	awk '
 	# escape string for shell arg
-	function escape_shell_arg(string) {
+	function escape_shell_arg(string,   q, qq, s) {
 		q = sprintf("%c", 39);
 		qq = "\"";
 		s = q qq q qq q;
@@ -26,7 +26,7 @@ template_subst() {
 	}
 
 	# base64 encode a file
-	function base64(file) {
+	function base64(file,   cmd, out) {
 		cmd = "base64 " file;
 		out = ""
 		while ((cmd | getline) > 0) {
@@ -37,7 +37,7 @@ template_subst() {
 	}
 
 	# base64 encode a string
-	function base64_string(data) {
+	function base64_string(data,   cmd, out) {
 		# if i knew how to make two way pipes, i would do that here
 		cmd = "echo -n " escape_shell_arg(data) " | base64";
 		out = ""
@@ -54,7 +54,7 @@ template_subst() {
 	}
 
 	# urlencode
-	function urlencode(data) {
+	function urlencode(data,   hextab, i, n, res, c, lo, hi) {
 		split("1 2 3 4 5 6 7 8 9 a b c d e f", hextab, " ")
 		hextab[0] = 0
 		for (i = 1; i <= 255; i++) {
