@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 9697 2008-04-08 11:10:46Z glen $
+# $Id: nagios-notify 9899 2008-10-11 15:00:04Z glen $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -16,6 +16,16 @@ prog="${0##*/}"
 template_subst() {
 	local tmpl="$1"
 	awk '
+	# escape string for shell arg
+	function escape_shell_arg(string) {
+		q = sprintf("%c", 39);
+		qq = "\"";
+		s = q qq q qq q;
+		gsub(q, s, string);
+		return q string q
+	}
+
+	# base64 encode a file
 	function base64(file) {
 		cmd = "base64 " file;
 		out = ""
@@ -25,6 +35,24 @@ template_subst() {
 		close(cmd);
 		return out;
 	}
+
+	# base64 encode a string
+	function base64_string(data) {
+		# if i knew how to make two way pipes, i would do that here
+		cmd = "echo -n " escape_shell_arg(data) " | base64";
+		out = ""
+		while ((cmd | getline) > 0) {
+			out = out $0;
+		}
+		close(cmd);
+		return out;
+	}
+
+	# encode email header as rfc2047 (using base64 encoding)
+	function encode_mime_header(charset, data) {
+		return "=?" charset "?b?" base64_string(data) "?="
+	}
+
 	{
 		# replace environ variables
 		for (var in ENVIRON) {
@@ -35,12 +63,24 @@ template_subst() {
 			}
 		}
 
-		# replace special: base64 handler
+		# $(base64:/path/to/file)
 		if (match($0, /\$\(base64:(.*)\)/)) {
-			file = substr($0, RSTART + 9, RLENGTH - 10);
+			pos = length("$(base64:")
+			file = substr($0, RSTART + pos, RLENGTH - pos - 1);
 			left = substr($0, 0, RSTART);
 			right = substr($0, RSTART + RLENGTH);
 			$0 = left base64(file) right;
+		}
+
+		# $(encode_mime_header:CHARSET,DATA)
+		if (match($0, /\$\(encode_mime_header:([^,]*,.*)\)/)) {
+			pos = length("$(encode_mime_header:")
+			params = substr($0, RSTART + pos, RLENGTH - pos - 1);
+			left = substr($0, 0, RSTART);
+			right = substr($0, RSTART + RLENGTH);
+			charset = substr(params, 1, index(params, ",") - 1)
+			data = substr(params, index(params, ",") + 1)
+			$0 = left encode_mime_header(charset, data) right;
 		}
 
 		# print out
