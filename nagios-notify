@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 9903 2008-10-11 19:39:17Z glen $
+# $Id: nagios-notify 9904 2008-10-11 20:31:54Z glen $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -76,14 +76,142 @@ template_subst() {
 		return res
 	}
 
-	{
-		# replace environ variables
+	# trim whitespace at both sides
+	function trim(s) {
+		gsub(/(^ *| *$)/, "", s);
+		return s;
+	}
+
+	# remove quotation marks or regexps if surrounded at both ends
+	function unquote(s,   c1, c2) {
+		c1 = substr(s, 1, 1);
+		c2 = substr(s, length(s));
+		if (c1 == c2 && (c1 == "\"" || c1 == "/")) {
+			return substr(s, 2, length(s) - 2);
+		}
+		return s;
+	}
+
+	function eval_expr(left, op, right) {
+		left = unquote(left);
+		right = unquote(right);
+
+		if (op == "==") {
+			return left == right;
+
+		} else if (op == "=~") {
+			return left ~ right;
+
+		} else if (op == "!~") {
+			return left !~ right;
+
+		} else if (op == "!=") {
+			return left != right;
+
+		} else if (op == ">=") {
+			return int(left) >= int(right);
+
+		} else if (op == "<=") {
+			return int(left) <= int(right);
+
+		} else if (op == ">") {
+			return int(left) > int(right);
+
+		} else if (op == "<") {
+			return int(left) < int(right);
+
+		}
+	}
+
+	function process_expr(line,   cmd, left, op, right) {
+		# proccess line. set: cmd, left, op, right
+		if (match(line, /^#if +/)) {
+			cmd = "if";
+			line = substr(line, 1 + RLENGTH);
+
+			# find left expression, operator, right expression
+			if (match(line, "^.*("OPS")")) {
+				left = trim(substr(line, 1, RLENGTH));
+				right = trim(substr(line, RSTART + RLENGTH));
+				# find op from end of left
+				if (match(left, "("OPS")$")) {
+					op = substr(left, RSTART, RLENGTH);
+					left = substr(left, 1, RSTART - 1);
+				}
+			}
+		} else if (match(line, /^#(else|endif) */)) {
+			cmd = trim(substr(line, RSTART + 1, RLENGTH - 1));
+			op = left = right = "";
+		}
+
+		# eval expression and change output control
+		if (cmd == "if") {
+			state_push(state_get() && eval_expr(left, op, right));
+		} else if (cmd == "else") {
+			state_set(!state_get());
+		} else if (cmd == "endif") {
+			state_pop();
+		}
+	}
+
+	# functions for output control
+	function state_push(flag) {
+		_stack_depth++;
+		_stack[_stack_depth] = flag;
+	}
+	function state_pop() {
+		if (_stack_depth) {
+			_stack_depth--;
+		}
+		return _stack[_stack_depth];
+	}
+	function state_set(flag) {
+		_stack[_stack_depth] = flag;
+	}
+	function state_get() {
+		return _stack[_stack_depth];
+	}
+
+	BEGIN {
+		# import environ variables
 		for (var in ENVIRON) {
 			if (substr(var, 1, length("NAGIOS_")) == "NAGIOS_") {
 				val = ENVIRON[var];
 				var = substr(var, 1 + length("NAGIOS_"));
-				gsub("\$" var "\$", val);
+				# add to vars[] array
+				vars[var] = val;
 			}
+		}
+
+		# list of comparision operands
+		CMDS = "if|else|endif"
+		# valid operands
+		OPS = "==|=~|!~|!=|>=|<=|>|<";
+		# valid variables in expression
+		# - numbers
+		# - strings in quotes
+		# - regexps between //
+		VARS = "[0-9]+|\"[^\"]+\"|/[^/]+/";
+
+		# by default we have no condition set
+		_stack_depth = 0;
+		_stack[_stack_depth] = 1;
+	}
+
+	{
+		# replace nagios macros
+		for (var in vars) {
+			val = vars[var];
+			gsub("\$" var "\$", val);
+		}
+
+		if (match($0, "^#(if *("VARS") *("OPS") *("VARS") *$|else|endif)")) {
+			process_expr($0);
+			next;
+		}
+
+		if (!state_get()) {
+			next;
 		}
 
 		# $(base64:/path/to/file)
@@ -115,7 +243,7 @@ template_subst() {
 		}
 
 		# print out
-		print
+		print;
 	}
 	' $tmpl
 }
