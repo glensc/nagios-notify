@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 9904 2008-10-11 20:31:54Z glen $
+# $Id: nagios-notify 9906 2008-10-12 11:16:18Z glen $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -92,6 +92,38 @@ template_subst() {
 		return s;
 	}
 
+	function eval_math(left, op, right) {
+		if (op == "+") {
+			return left + right;
+
+		} else if (op == "-") {
+			return left - right;
+
+		} else if (op == "*") {
+			return left * right;
+
+		} else if (op == "/") {
+			return left / right;
+
+		}
+	}
+
+	# evaluate mathematical expression
+	function math(expr,   op, left, right) {
+		# find left expression, operator, right expression
+		if (match(expr, "^.*("MATH_OPS")")) {
+			left = trim(substr(expr, 1, RLENGTH));
+			right = trim(substr(expr, RSTART + RLENGTH));
+			# find op from end of left
+			if (match(left, "("MATH_OPS")$")) {
+				op = substr(left, RSTART, RLENGTH);
+				left = substr(left, 1, RSTART - 1);
+			}
+		}
+
+		return eval_math(int(left), op, int(right));
+	}
+
 	function eval_expr(left, op, right) {
 		left = unquote(left);
 		right = unquote(right);
@@ -99,7 +131,7 @@ template_subst() {
 		if (op == "==") {
 			return left == right;
 
-		} else if (op == "=~") {
+		} else if (op == "=~" || op == "~=") {
 			return left ~ right;
 
 		} else if (op == "!~") {
@@ -130,11 +162,11 @@ template_subst() {
 			line = substr(line, 1 + RLENGTH);
 
 			# find left expression, operator, right expression
-			if (match(line, "^.*("OPS")")) {
+			if (match(line, "^.*("COND_OPS")")) {
 				left = trim(substr(line, 1, RLENGTH));
 				right = trim(substr(line, RSTART + RLENGTH));
 				# find op from end of left
-				if (match(left, "("OPS")$")) {
+				if (match(left, "("COND_OPS")$")) {
 					op = substr(left, RSTART, RLENGTH);
 					left = substr(left, 1, RSTART - 1);
 				}
@@ -183,15 +215,17 @@ template_subst() {
 			}
 		}
 
-		# list of comparision operands
-		CMDS = "if|else|endif"
 		# valid operands
-		OPS = "==|=~|!~|!=|>=|<=|>|<";
+		COND_OPS = "==|=~|~=|!~|!=|>=|<=|>|<";
 		# valid variables in expression
 		# - numbers
 		# - strings in quotes
 		# - regexps between //
-		VARS = "[0-9]+|\"[^\"]+\"|/[^/]+/";
+		COND_VARS = "[0-9]+|\"[^\"]+\"|/[^/]+/";
+
+		# valid mathematical operands we support
+		MATH_OPS = "\+|-|\*|/"
+		MATH_EXPR = "[0-9]+"
 
 		# by default we have no condition set
 		_stack_depth = 0;
@@ -205,7 +239,7 @@ template_subst() {
 			gsub("\$" var "\$", val);
 		}
 
-		if (match($0, "^#(if *("VARS") *("OPS") *("VARS") *$|else|endif)")) {
+		if (match($0, "^#(if *("COND_VARS") *("COND_OPS") *("COND_VARS") *$|else|endif)")) {
 			process_expr($0);
 			next;
 		}
@@ -240,6 +274,15 @@ template_subst() {
 			left = substr($0, 0, RSTART);
 			right = substr($0, RSTART + RLENGTH);
 			$0 = left urlencode(data) right;
+		}
+
+		# $(math:expression)
+		if (match($0, "\$\(math:("MATH_EXPR") *("MATH_OPS") *("MATH_EXPR")\)")) {
+			pos = length("$(math:")
+			expr = substr($0, RSTART + pos, RLENGTH - pos - 1);
+			left = substr($0, 0, RSTART);
+			right = substr($0, RSTART + RLENGTH);
+			$0 = left math(expr) right;
 		}
 
 		# print out
