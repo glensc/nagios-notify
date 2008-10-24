@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 9906 2008-10-12 11:16:18Z glen $
+# $Id: nagios-notify 9916 2008-10-24 09:39:30Z glen $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -8,7 +8,7 @@
 # License: Same as Nagios (GPL v2)
 #
 
-templatedir='/etc/nagios/templates'
+templatedir=${NAGIOS_TEMPLATEDIR:-/etc/nagios/templates}
 export NAGIOS_DATADIR='/usr/share/nagios'
 prog="${0##*/}"
 
@@ -249,7 +249,7 @@ template_subst() {
 		}
 
 		# $(base64:/path/to/file)
-		if (match($0, /\$\(base64:(.*)\)/)) {
+		while (match($0, /\$\(base64:([^)]+)\)/)) {
 			pos = length("$(base64:")
 			file = substr($0, RSTART + pos, RLENGTH - pos - 1);
 			left = substr($0, 0, RSTART);
@@ -258,7 +258,7 @@ template_subst() {
 		}
 
 		# $(encode_mime_header:CHARSET,DATA)
-		if (match($0, /\$\(encode_mime_header:([^,]*,.*)\)/)) {
+		while (match($0, /\$\(encode_mime_header:([^,]*,[^)]+)\)/)) {
 			pos = length("$(encode_mime_header:")
 			params = substr($0, RSTART + pos, RLENGTH - pos - 1);
 			left = substr($0, 0, RSTART);
@@ -268,7 +268,7 @@ template_subst() {
 			$0 = left encode_mime_header(charset, data) right;
 		}
 		# $(urlencode:data)
-		if (match($0, /\$\(urlencode:(.*)\)/)) {
+		while (match($0, /\$\(urlencode:([^)]+)\)/)) {
 			pos = length("$(urlencode:")
 			data = substr($0, RSTART + pos, RLENGTH - pos - 1);
 			left = substr($0, 0, RSTART);
@@ -277,7 +277,7 @@ template_subst() {
 		}
 
 		# $(math:expression)
-		if (match($0, "\$\(math:("MATH_EXPR") *("MATH_OPS") *("MATH_EXPR")\)")) {
+		while (match($0, "\$\(math:("MATH_EXPR") *("MATH_OPS") *("MATH_EXPR")\)")) {
 			pos = length("$(math:")
 			expr = substr($0, RSTART + pos, RLENGTH - pos - 1);
 			left = substr($0, 0, RSTART);
