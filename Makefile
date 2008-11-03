@@ -19,7 +19,8 @@ install:
 dist:
 	rm -rf $(package)-$(version)
 	svn up
+	./changelog.sh
 	install -d $(package)-$(version)
-	cp -a Makefile $(package) $(package).cfg templates $(package)-$(version)
+	cp -a Makefile ChangeLog $(package) $(package).cfg templates $(package)-$(version)
 	tar --exclude=.svn --exclude='*~' -cjf $(package)-$(version).tar.bz2 $(package)-$(version)
 	rm -rf $(package)-$(version)
