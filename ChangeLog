@@ -1,0 +1,200 @@
+2008-11-03 23:13 +0000 [r9949-9953]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* Makefile: - 0.12 - NOTE: templates and sample config has been
+	  renamed to follow nagios 3.0 naming schema
+
+	* Makefile: - add ChangeLog to package
+
+	* changelog.sh (added): - add from rc-scrits trunk
+
+	* templates/notify-service-by-jabber.tmpl (added),
+	  templates/notify-by-jabber.tmpl (removed): - one more rename
+
+	* templates/notify-service-by-email.tmpl (added),
+	  templates/notify-service-by-eggdrop.tmpl (added),
+	  templates/notify-by-eggdrop.tmpl (removed),
+	  templates/notify-by-email.tmpl (removed),
+	  templates/notify-service-by-email-conditions.tmpl (added),
+	  nagios-notify.cfg, templates/notify-by-email-conditions.tmpl
+	  (removed), templates/notify-service-by-sms.tmpl (added),
+	  templates/notify-service-by-jabber-embedimage.tmpl (added),
+	  templates/host-notify-by-jabber.tmpl (removed),
+	  templates/notify-host-by-jabber.tmpl (added),
+	  templates/host-notify-by-email.tmpl (removed),
+	  templates/notify-by-jabber-embedimage.tmpl (removed),
+	  templates/notify-by-sms.tmpl (removed),
+	  templates/notify-host-by-eggdrop.tmpl (added),
+	  templates/notify-host-by-email.tmpl (added),
+	  templates/host-notify-by-eggdrop.tmpl (removed),
+	  templates/notify-service-by-jabber-richtext.tmpl (added),
+	  templates/notify-host-by-sms.tmpl (added),
+	  templates/notify-by-jabber-richtext.tmpl (removed),
+	  templates/host-notify-by-sms.tmpl (removed): - sanitize naming of
+	  host/templates: s/host-notify-by-/notify-host-by-/
+	  s/notify-by-/notify-service-by-/
+
+2008-11-03 22:06 +0000 [r9931]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* templates/notify-by-jabber-richtext.tmpl: - add [log] link for
+	  event history
+
+2008-10-24 09:39 +0000 [r9916]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - allow matching multiple $(func:args...) on same
+	  line
+
+2008-10-12 11:16 +0000 [r9906]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - add $(math:expression)
+
+2008-10-11 20:32 +0000 [r9904-9905]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* templates/notify-by-email-conditions.tmpl (added): - service
+	  template with conditions. based on one from this tarball:
+	  http://sweetdeliah.com/nagios/notify/nagios_notify-0.4.2.tar.gz
+
+	* nagios-notify: - add support for conditional templates
+
+2008-10-11 19:39 +0000 [r9903]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - local vars for functions
+
+2008-10-11 17:13 +0000 [r9902]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - implement $(urlencode:data)
+
+2008-10-11 15:00 +0000 [r9899-9900]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* Makefile: - version 0.11
+
+	* nagios-notify: - add $(encode_mime_header:CHARSET,DATA)
+
+2008-10-11 14:55 +0000 [r9897-9898]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* templates/host-notify-by-email.tmpl,
+	  templates/notify-by-email.tmpl: - encode To header
+
+	* templates/host-notify-by-email.tmpl,
+	  templates/notify-by-email.tmpl: - unify email headers
+
+2008-10-11 09:57 +0000 [r9896]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* templates/host-notify-by-email.tmpl,
+	  templates/notify-by-email.tmpl: - add charset to email templates
+
+2008-05-30 05:49 +0000 [r9782]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* INSTALL (added): - plain install instructions
+
+2008-04-08 18:08 +0000 [r9702]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify.cfg: - vim filetype=nagios
+
+2008-04-08 11:22 +0000 [r9698-9700]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* Makefile: - version 0.10
+
+	* Makefile: - move tool to /usr/lib/nagios
+
+	* nagios-notify.cfg: - move nagios notify outside $PATH as reqires
+	  nagios internal vars to operate properly
+
+2008-04-08 11:10 +0000 [r9696-9697]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - UTF8
+
+	* nagios-notify: - configure-like variable test check - update
+	  requires - expand Id keyword
+
+2008-04-08 10:01 +0000 [r9695]  Arkadiusz Miśkiewicz <arekm/at/pld-linux.org>
+
+	* nagios-notify: Use default /var/lib/nagios/status.dat when
+	  NAGIOS_STATUSDATAFILE is set but empty. Raise error when variable
+	  is not set at all. (needed for some nagios3 where
+	  NAGIOS_STATUSDATAFILE is set but empty)
+
+2008-01-22 21:57 +0000 [r9196]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - spelling
+
+2008-01-22 15:01 +0000 [r9192-9194]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* templates/notify-by-jabber-embedimage.tmpl: - template with embed
+	  image links
+
+	* templates/notify-by-jabber-embedimage.tmpl (added): - cp
+	  notify-by-jabber-richtext.tmpl notify-by-jabber-embedimage.tmpl
+
+	* nagios-notify: - convert to awk only
+
+2008-01-22 14:55 +0000 [r9190-9191]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* templates/notify-by-jabber-richtext.tmpl: - sample richtext
+	  template (html)
+
+	* templates/notify-by-jabber-richtext.tmpl (added): - cp
+	  notify-by-jabber.tmpl notify-by-jabber-richtext.tmpl
+
+2008-01-22 14:49 +0000 [r9189]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - parse $(base64:FILEPATH) macro from templates
+
+2006-11-13 09:12 +0000 [r7970-7975]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* Makefile: - 0.9.5
+
+	* package.sh (removed): - err, use make dist instead
+
+	* package.sh (added), tag.sh (added): - utility scripts
+
+	* Makefile: - 0.9.4
+
+	* nagios-notify.cfg: - use -a(ccount) option for jabber-notify
+
+2006-08-04 01:11 +0000 [r7589-7591]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - describe dependencies
+
+	* nagios-notify: - exit when done (don't assume there's stdin)
+
+	* nagios-notify: - use local variable
+
+2006-08-04 00:11 +0000 [r7588]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify.cfg: - add info banner
+
+2006-08-04 00:06 +0000 [r7583-7586]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* Makefile: - install config - version 0.9.3
+
+	* Makefile: - add nagios config - version 0.9.2
+
+	* nagios-notify.cfg (added): - sample nagios config
+
+2006-08-03 23:54 +0000 [r7581-7582]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* env.sh (added): - sample env in shell syntax
+
+	* env.txt (added): - sample env from nagios
+
+2006-08-03 23:50 +0000 [r7579]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* Makefile: - add Makefile in make dist - version 0.9.1
+
+2006-08-03 23:39 +0000 [r7576]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* Makefile (added): - add makefile
+
+2006-08-03 23:33 +0000 [r7574-7575]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* templates/host-notify-by-jabber.tmpl (added),
+	  templates/host-notify-by-eggdrop.tmpl (added),
+	  templates/host-notify-by-email.tmpl (added),
+	  templates/notify-by-sms.tmpl (added),
+	  templates/notify-by-jabber.tmpl (added), templates (added),
+	  templates/notify-by-eggdrop.tmpl (added),
+	  templates/notify-by-email.tmpl (added),
+	  templates/host-notify-by-sms.tmpl (added): - Import templates
+
+	* / (added), nagios-notify (added): - imported into SVN
+
