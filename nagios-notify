@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 9916 2008-10-24 09:39:30Z glen $
+# $Id: nagios-notify 9966 2008-11-04 22:57:02Z glen $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -221,7 +221,7 @@ template_subst() {
 		# - numbers
 		# - strings in quotes
 		# - regexps between //
-		COND_VARS = "[0-9]+|\"[^\"]+\"|/[^/]+/";
+		COND_VARS = "[0-9]+|\"[^\"]*\"|/[^/]+/";
 
 		# valid mathematical operands we support
 		MATH_OPS = "\+|-|\*|/"
