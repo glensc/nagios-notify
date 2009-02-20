@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 9966 2008-11-04 22:57:02Z glen $
+# $Id: nagios-notify 10134 2009-02-20 11:10:55Z glen $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -306,6 +306,13 @@ tmpl="$templatedir/$1.tmpl"
 if [ ! -f "$tmpl" ]; then
 	echo >&2 "$prog: template '$tmpl' can not be found!"
 	exit 1
+fi
+
+# Save ENV to temp file for debugging
+#debug=1
+if [ "$debug" = 1 ]; then
+	tmp=$(mktemp -t nagios-notify.env.XXXXXX)
+	env | LC_ALL=C sort | awk -F= '/NAGIOS_/{printf("export %s=%c%s%c\n", $1, 39, $2, 39)}' > $tmp
 fi
 
 template_subst "$tmpl"
