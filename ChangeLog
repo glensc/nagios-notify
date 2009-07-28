@@ -1,3 +1,24 @@
+2009-07-28 10:14 +0000 [r10428-10429]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* Makefile: - version 0.13: nagios 3.1 compat
+
+	* nagios-notify: - nagios 3.1 compat (skip last_version,
+	  new_version) matching
+
+2009-02-22 11:39 +0000 [r10141]  Arkadiusz Miśkiewicz <arekm/at/pld-linux.org>
+
+	* templates/notify-service-by-sms.tmpl,
+	  templates/notify-host-by-sms.tmpl: CONTACTPAGER not CONTACTEMAIL
+	  for sms notifications
+
+2009-02-20 11:10 +0000 [r10134]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - easy code to save env for debugging
+
+2008-11-04 22:57 +0000 [r9966]  Elan Ruusamäe <glen/at/pld-linux.org>
+
+	* nagios-notify: - allow comparing empty string
+
 2008-11-03 23:13 +0000 [r9949-9953]  Elan Ruusamäe <glen/at/pld-linux.org>
 
 	* Makefile: - 0.12 - NOTE: templates and sample config has been
