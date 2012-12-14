@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 10428 2009-07-28 10:13:35Z glen $
+# $Id: nagios-notify 12605 2012-12-14 11:10:56Z jajcus $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -236,6 +236,8 @@ template_subst() {
 		# replace nagios macros
 		for (var in vars) {
 			val = vars[var];
+			gsub("\\", "\\\\", val);
+			gsub("&", "\\\&", val);
 			gsub("\$" var "\$", val);
 		}
 
