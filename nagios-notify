@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: nagios-notify 12605 2012-12-14 11:10:56Z jajcus $
+# $Id: nagios-notify 12606 2012-12-14 11:52:20Z jajcus $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
@@ -79,6 +79,13 @@ template_subst() {
 	# trim whitespace at both sides
 	function trim(s) {
 		gsub(/(^ *| *$)/, "", s);
+		return s;
+	}
+
+	# convert "\n", "\t" to the actual control characters
+	function unescape(s) {
+		gsub("\\\\n", "\n", s);
+		gsub("\\\\t", "\t", s);
 		return s;
 	}
 
@@ -276,6 +283,14 @@ template_subst() {
 			left = substr($0, 0, RSTART);
 			right = substr($0, RSTART + RLENGTH);
 			$0 = left urlencode(data) right;
+		}
+		# $(unescape:data)
+		while (match($0, /\$\(unescape:([^)]*)\)/)) {
+			pos = length("$(unescape:")
+			data = substr($0, RSTART + pos, RLENGTH - pos - 1);
+			left = substr($0, 0, RSTART);
+			right = substr($0, RSTART + RLENGTH);
+			$0 = left unescape(data) right;
 		}
 
 		# $(math:expression)
