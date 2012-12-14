@@ -1,5 +1,5 @@
 package = nagios-notify
-version = 0.13
+version = 0.14
 prefix = /usr
 sysconfdir = /etc/nagios
 tooldir = $(prefix)/lib/nagios
