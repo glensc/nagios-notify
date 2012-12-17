@@ -1,6 +1,6 @@
 #!/bin/sh
 url=$(svn info | awk '/^URL:/{gsub("/trunk$", "", $2); print $2}')
-rev=$(svn info | awk '/^Revision:/{print $2}')
+rev=$(svnversion || svn info | awk '/^Revision:/{print $2}')
 version=$(awk -F= '/^version/{print $2}' Makefile | xargs)
 tag="$version"
 
