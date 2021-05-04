@@ -53,6 +53,10 @@ template_subst() {
 		return "=?" charset "?b?" base64_string(data) "?="
 	}
 
+	function timestamp_date(tstamp) {
+		return strftime("%Y-%m-%d %H:%M:%S", tstamp);
+	}
+
 	# urlencode
 	function urlencode(data,   hextab, i, n, res, c, lo, hi) {
 		split("1 2 3 4 5 6 7 8 9 a b c d e f", hextab, " ")
@@ -276,6 +280,16 @@ template_subst() {
 			data = substr(params, index(params, ",") + 1)
 			$0 = left encode_mime_header(charset, data) right;
 		}
+
+		# $(timestamp_date:data)
+		while (match($0, /\$\(timestamp_date:([^)]+)\)/)) {
+			pos = length("$(timestamp_date:")
+			data = substr($0, RSTART + pos, RLENGTH - pos - 1);
+			left = substr($0, 0, RSTART);
+			right = substr($0, RSTART + RLENGTH);
+			$0 = left timestamp_date(data) right;
+		}
+
 		# $(urlencode:data)
 		while (match($0, /\$\(urlencode:([^)]+)\)/)) {
 			pos = length("$(urlencode:")

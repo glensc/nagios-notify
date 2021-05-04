@@ -4,4 +4,7 @@ Date: $LONGDATETIME$
 From: $HOSTNAME$@nagios.0
 Subject: $HOSTSTATE$
 
+Current state since: $HOSTDURATION$
+Last Host UP: $(timestamp_date:$LASTHOSTUP$)
+
 $HOSTOUTPUT$

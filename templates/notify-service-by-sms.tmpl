@@ -4,6 +4,9 @@ Date: $LONGDATETIME$
 From: $SERVICEDESC$@$HOSTNAME$.0
 Subject: $SERVICESTATE$
 
+Current state since: $SERVICEDURATION$
+Last service OK: $(timestamp_date:$LASTSERVICEOK$)
+
 #if "$NOTIFICATIONTYPE$" == "ACKNOWLEDGEMENT"
 Acknowledged by $SERVICEACKAUTHOR$: $SERVICEACKCOMMENT$
 #else
