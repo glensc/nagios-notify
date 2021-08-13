@@ -1,5 +1,4 @@
 #!/bin/sh
-# $Id: nagios-notify 12606 2012-12-14 11:52:20Z jajcus $
 #
 # Template based Nagios notify script.
 # Requires: awk, base64 (coreutils)
