@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
+from datetime import datetime
 from functools import cached_property
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -15,6 +16,8 @@ class NagiosNotify:
             loader=FileSystemLoader(self.template_dir),
             autoescape=select_autoescape()
         )
+        env.filters["timestamp_date"] = self.timestamp_date
+
         return env
 
     @cached_property
@@ -34,6 +37,10 @@ class NagiosNotify:
         tpl = self.get_template(filename)
 
         return tpl.render(self.variables)
+
+    @staticmethod
+    def timestamp_date(timestamp: str):
+        return datetime.fromtimestamp(int(timestamp)).strftime("%Y-%m-%d %H:%M:%S")
 
 
 if not len(sys.argv) > 1:
