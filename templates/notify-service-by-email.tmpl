@@ -1,25 +1,25 @@
 X-Mailer: Nagios Notify
 Content-Type: text/plain; charset="utf-8"
-Message-Id: $SERVICEDESC$.$DATE$@$HOSTALIAS$.nagios
-In-Reply-To: $SERVICEDESC$.$DATE$@$HOSTALIAS$.nagios
-To: "$(encode_mime_header:utf-8,$CONTACTALIAS$)" <$CONTACTEMAIL$>
-Subject: ** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **
+Message-Id: {{ SERVICEDESC }}.{{ DATE }}@{{ HOSTALIAS }}.nagios
+In-Reply-To: {{ SERVICEDESC }}.{{ DATE }}@{{ HOSTALIAS }}.nagios
+To: "{{ CONTACTALIAS|encode_mime_header }}" <{{ CONTACTEMAIL }}>
+Subject: ** {{ NOTIFICATIONTYPE }} alert - {{ HOSTALIAS }}/{{ SERVICEDESC }} is {{ SERVICESTATE }} **
 Precedence: bulk
 Auto-Submitted: auto-generated
 
 ***** Nagios *****
 
-Notification Type: $NOTIFICATIONTYPE$
+Notification Type: {{ NOTIFICATIONTYPE }}
 
-Service: $SERVICEDESC$
-Host: $HOSTALIAS$
-Address: $HOSTADDRESS$
-State: $SERVICESTATE$
+Service: {{ SERVICEDESC }}
+Host: {{ HOSTALIAS }}
+Address: {{ HOSTADDRESS }}
+State: {{ SERVICESTATE }}
 
-Current state since: $SERVICEDURATION$
-Last service OK: $(timestamp_date:$LASTSERVICEOK$)
-Date/Time: $LONGDATETIME$
+Current state since: {{ SERVICEDURATION }}
+Last service OK: {{ LASTSERVICEOK|timestamp_date }}
+Date/Time: {{ LONGDATETIME }}
 
 Additional Info:
 
-$SERVICEOUTPUT$
+{{ SERVICEOUTPUT }}

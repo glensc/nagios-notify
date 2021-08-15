@@ -1,2 +1,2 @@
-$SERVICEDESC$/$HOSTNAME$ $NOTIFICATIONTYPE$: $SERVICESTATE$ (Current state since: $SERVICEDURATION$; Last service OK: $(timestamp_date:$LASTSERVICEOK$))
-$SERVICEOUTPUT$
+{{ SERVICEDESC }}/{{ HOSTNAME }} {{ NOTIFICATIONTYPE }}: {{ SERVICESTATE }} (Current state since: {{ SERVICEDURATION }}; Last service OK: {{ LASTSERVICEOK|timestamp_date }})
+{{ SERVICEOUTPUT }}

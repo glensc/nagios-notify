@@ -1,20 +1,20 @@
 X-Mailer: Nagios Notify
 Content-Type: text/plain; charset="utf-8"
-Message-Id: $DATE$@$HOSTNAME$.nagios
-In-Reply-To: $DATE$@$HOSTNAME$.nagios
-To: "$(encode_mime_header:utf-8,$CONTACTALIAS$)" <$CONTACTEMAIL$>
-Subject: Host $HOSTSTATE$ alert for $HOSTNAME$!
+Message-Id: {{ DATE }}@{{ HOSTNAME }}.nagios
+In-Reply-To: {{ DATE }}@{{ HOSTNAME }}.nagios
+To: "{{ CONTACTALIAS|encode_mime_header }}" <{{ CONTACTEMAIL }}>
+Subject: Host {{ HOSTSTATE }} alert for {{ HOSTNAME }}!
 Precedence: bulk
 Auto-Submitted: auto-generated
 
 ***** Nagios *****
 
-Notification Type: $NOTIFICATIONTYPE$
-Host: $HOSTNAME$
-State: $HOSTSTATE$
-Address: $HOSTADDRESS$
-Info: $HOSTOUTPUT$
+Notification Type: {{ NOTIFICATIONTYPE }}
+Host: {{ HOSTNAME }}
+State: {{ HOSTSTATE }}
+Address: {{ HOSTADDRESS }}
+Info: {{ HOSTOUTPUT }}
 
-Current state since: $SERVICEDURATION$
-Last service OK: $(timestamp_date:$LASTSERVICEOK$)
-Date/Time: $LONGDATETIME$
+Current state since: {{ SERVICEDURATION }}
+Last service OK: {{ LASTSERVICEOK|timestamp_date }}
+Date/Time: {{ LONGDATETIME }}

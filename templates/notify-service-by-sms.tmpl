@@ -1,14 +1,14 @@
 X-Mailer: Nagios Notify
-To: $CONTACTPAGER$
-Date: $LONGDATETIME$
-From: $SERVICEDESC$@$HOSTNAME$.0
-Subject: $SERVICESTATE$
+To: {{ CONTACTPAGER }}
+Date: {{ LONGDATETIME }}
+From: {{ SERVICEDESC }}@{{ HOSTNAME }}.0
+Subject: {{ SERVICESTATE }}
 
-Current state since: $SERVICEDURATION$
-Last service OK: $(timestamp_date:$LASTSERVICEOK$)
+Current state since: {{ SERVICEDURATION }}
+Last service OK: {{ LASTSERVICEOK|timestamp_date }})
 
-#if "$NOTIFICATIONTYPE$" == "ACKNOWLEDGEMENT"
-Acknowledged by $SERVICEACKAUTHOR$: $SERVICEACKCOMMENT$
-#else
-$SERVICEOUTPUT$
-#endif
+{% if NOTIFICATIONTYPE == "ACKNOWLEDGEMENT" %}
+Acknowledged by {{ SERVICEACKAUTHOR }}: {{ SERVICEACKCOMMENT }}
+{% else %}
+{{ SERVICEOUTPUT }}
+{% endif %}
