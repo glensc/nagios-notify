@@ -11,6 +11,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 class NagiosNotify:
     template_dir = "templates"
+    data_dir = "/usr/share/nagios"
 
     @cached_property
     def env(self):
@@ -27,7 +28,7 @@ class NagiosNotify:
 
     @cached_property
     def variables(self):
-        env = dict()
+        env = dict(DATADIR=self.data_dir)
         for name, value in os.environ.items():
             if not name.startswith("NAGIOS_"):
                 continue
