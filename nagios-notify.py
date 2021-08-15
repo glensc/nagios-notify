@@ -2,6 +2,7 @@
 import base64
 import os
 import sys
+import urllib.parse
 from datetime import datetime
 from functools import cached_property
 
@@ -19,6 +20,7 @@ class NagiosNotify:
         )
         env.filters["timestamp_date"] = self.timestamp_date
         env.filters["encode_mime_header"] = self.encode_mime_header
+        env.filters["urlencode"] = self.urlencode
 
         return env
 
@@ -52,6 +54,10 @@ class NagiosNotify:
         encoded = base64.b64encode(data.encode(charset)).decode("ascii")
 
         return f"=?{charset}?b?{encoded}?="
+
+    @staticmethod
+    def urlencode(url: str):
+        return urllib.parse.quote_plus(url)
 
 
 if not len(sys.argv) > 1:
