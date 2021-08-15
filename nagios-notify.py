@@ -21,6 +21,7 @@ class NagiosNotify:
         env.filters["timestamp_date"] = self.timestamp_date
         env.filters["encode_mime_header"] = self.encode_mime_header
         env.filters["urlencode"] = self.urlencode
+        env.filters["base64"] = self.base64
 
         return env
 
@@ -58,6 +59,13 @@ class NagiosNotify:
     @staticmethod
     def urlencode(url: str):
         return urllib.parse.quote_plus(url)
+
+    @staticmethod
+    def base64(filename: str):
+        with open(filename, 'rb') as f:
+            encoded = base64.encodebytes(f.read()).decode("ascii")
+
+        return encoded
 
 
 if not len(sys.argv) > 1:
