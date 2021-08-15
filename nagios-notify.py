@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import base64
 import os
 import sys
 from datetime import datetime
@@ -17,6 +18,7 @@ class NagiosNotify:
             autoescape=select_autoescape()
         )
         env.filters["timestamp_date"] = self.timestamp_date
+        env.filters["encode_mime_header"] = self.encode_mime_header
 
         return env
 
@@ -41,6 +43,15 @@ class NagiosNotify:
     @staticmethod
     def timestamp_date(timestamp: str):
         return datetime.fromtimestamp(int(timestamp)).strftime("%Y-%m-%d %H:%M:%S")
+
+    @staticmethod
+    def encode_mime_header(data: str, charset: str = "utf-8"):
+        """
+        Encode email header as rfc2047 (using base64 encoding)
+        """
+        encoded = base64.b64encode(data.encode(charset)).decode("ascii")
+
+        return f"=?{charset}?b?{encoded}?="
 
 
 if not len(sys.argv) > 1:
