@@ -8,8 +8,6 @@
 {% set color = "#CCCCCC" -%}
 {% endif %}
 
-{%- set service_url = SERVICEINFOURL|replace("&", "%26") -%}
-{%- set host_url = HOSTNOTESURL|replace("&", "%26") -%}
 {%- set text = SERVICEOUTPUT -%}
 {%- set title = "Service {}: {}".format(NOTIFICATIONTYPE, SERVICESTATE) -%}
 
@@ -35,12 +33,12 @@
       "fields": [
         {
           "title": "Host",
-          "value": "<{{ host_url }}|{{ HOSTNAME }}>",
+          "value": "<{{ HOSTNOTESURL }}|{{ HOSTNAME }}>",
           "short": true
         },
         {
           "title": "Service",
-          "value": "<{{ service_url }}|{{ SERVICEDESC }}>",
+          "value": "<{{ SERVICEINFOURL }}|{{ SERVICEDESC }}>",
           "short": true
         }
       ]
