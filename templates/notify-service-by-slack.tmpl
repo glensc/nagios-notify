@@ -1,0 +1,47 @@
+{% if SERVICESTATE == "CRITICAL" %}
+{% set color = "danger" -%}
+{% elif SERVICESTATE == "WARNING" %}
+{% set color = "warning" -%}
+{% elif SERVICESTATE == "OK" %}
+{% set color = "good" -%}
+{% else %}
+{% set color = "#CCCCCC" -%}
+{% endif %}
+
+{%- set text = SERVICEOUTPUT -%}
+{%- set title = "Service {}: {}".format(NOTIFICATIONTYPE, SERVICESTATE) -%}
+
+{%- if NOTIFICATIONTYPE == "PROBLEM" -%}
+    {%- if NOTIFICATIONNUMBER|int > 1 -%}
+        {%- set title = "Service {}: {} for {}".format(NOTIFICATIONTYPE, SERVICESTATE, SERVICEDURATION) -%}
+    {%- endif -%}
+{%- elif NOTIFICATIONTYPE == "ACKNOWLEDGEMENT" -%}
+    {%- set title = "Problem has been acknowledged by {}: {}".format(SERVICEACKAUTHOR, SERVICEACKCOMMENT) -%}
+{%- elif NOTIFICATIONTYPE != "RECOVERY" -%}
+    {%- if NOTIFICATIONNUMBER|int >= 5 -%}
+        {%- set title = "PLEASE ACKNOWLEDGE THIS PROBLEM IF YOU ARE WORKING ON IT" -%}
+    {% endif %}
+{% endif %}
+
+{
+  "attachments": [
+    {
+      "color": "{{ color }}",
+      "title": {{ title | tojson }},
+      "text": {{ text | tojson }},
+      "ts": {{ TIMET }},
+      "fields": [
+        {
+          "title": "Host",
+          "value": "<{{ HOSTNOTESURL }}|{{ HOSTNAME }}>",
+          "short": true
+        },
+        {
+          "title": "Service",
+          "value": "<{{ SERVICEINFOURL }}|{{ SERVICEDESC }}>",
+          "short": true
+        }
+      ]
+    }
+  ]
+}
