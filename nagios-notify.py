@@ -12,7 +12,6 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 class NagiosNotify:
     template_dir = "templates"
     data_dir = "/usr/share/nagios"
-    cgi_url = "/nagios/cgi-bin"
 
     @cached_property
     def env(self):
@@ -31,7 +30,6 @@ class NagiosNotify:
     def default_variables(self):
         return {
             'DATADIR': self.data_dir,
-            'CGIURL': self.cgi_url,
         }
 
     @cached_property
