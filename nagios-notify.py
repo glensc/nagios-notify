@@ -50,7 +50,7 @@ class NagiosNotify:
         return env
 
     def get_template(self, filename: str):
-        return self.env.get_template(filename)
+        return self.env.get_template(f"{filename}.tmpl")
 
     def render(self, filename: str):
         tpl = self.get_template(filename)
@@ -83,7 +83,7 @@ class NagiosNotify:
 
 
 if not len(sys.argv) > 1:
-    print(f"Usage: {sys.executable} template_file.tmpl")
+    print(f"Usage: {sys.executable} template_name")
     sys.exit(2)
 
 template = sys.argv[1]
