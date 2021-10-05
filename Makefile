@@ -23,6 +23,6 @@ dist: ChangeLog
 	@test -z "`git status --porcelain`" || { echo >&2 'Seems git workspace not clean. Use "git clean -f" to remove unwanted files; aborting'; exit 1; }
 	rm -rf $(package)-$(version)
 	install -d $(package)-$(version)
-	cp -a Makefile ChangeLog $(package) $(package).cfg templates $(package)-$(version)
+	cp -a Makefile ChangeLog $(package).py $(package).cfg templates $(package)-$(version)
 	tar --exclude='*~' --xz -cf $(package)-$(version).tar.xz $(package)-$(version)
 	rm -rf $(package)-$(version)
