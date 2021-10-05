@@ -1,2 +1,2 @@
-$HOSTNAME$ $NOTIFICATIONTYPE$: $HOSTSTATE$ (Current state since: $HOSTDURATION$; Last host UP: $(timestamp_date:$LASTHOSTUP$))
-$HOSTOUTPUT$
+{{ HOSTNAME }} {{ NOTIFICATIONTYPE }}: {{ HOSTSTATE }} (Current state since: {{ HOSTDURATION }}; Last host UP: {{ LASTHOSTUP|timestamp_date }})
+{{ HOSTOUTPUT }}

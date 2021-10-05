@@ -1,10 +1,10 @@
-X-Mailer: Nagios/$VERSION$
-To: $CONTACTPAGER$
-Date: $LONGDATETIME$
-From: $HOSTNAME$@nagios.0
-Subject: $HOSTSTATE$
+X-Mailer: Nagios Notify
+To: {{ CONTACTPAGER }}
+Date: {{ LONGDATETIME }}
+From: {{ HOSTNAME }}@nagios.0
+Subject: {{ HOSTSTATE }}
 
-Current state since: $HOSTDURATION$
-Last Host UP: $(timestamp_date:$LASTHOSTUP$)
+Current state since: {{ HOSTDURATION }}
+Last Host UP: {{ LASTHOSTUP|timestamp_date }}
 
-$HOSTOUTPUT$
+{{ HOSTOUTPUT }}
