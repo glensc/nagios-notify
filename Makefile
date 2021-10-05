@@ -10,7 +10,7 @@ all:
 
 install:
 	install -d $(DESTDIR)$(tooldir)
-	install $(package) $(DESTDIR)$(tooldir)
+	install $(package).py $(DESTDIR)$(tooldir)/$(package)
 	install -d $(DESTDIR)$(templatedir)
 	cp -a templates/*.tmpl $(DESTDIR)$(templatedir)
 	install -d $(DESTDIR)$(pluginconfdir)
