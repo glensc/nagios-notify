@@ -10,13 +10,13 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 class NagiosNotify:
-    template_dir = "templates"
+    template_dir = "/etc/nagios/templates"
     data_dir = "/usr/share/nagios"
 
     @cached_property
     def env(self):
         env = Environment(
-            loader=FileSystemLoader(self.template_dir),
+            loader=FileSystemLoader(self.variables["TEMPLATEDIR"]),
             autoescape=select_autoescape()
         )
         env.filters["timestamp_date"] = self.timestamp_date
@@ -30,6 +30,7 @@ class NagiosNotify:
     def default_variables(self):
         return {
             'DATADIR': self.data_dir,
+            'TEMPLATEDIR': self.template_dir,
         }
 
     @cached_property
