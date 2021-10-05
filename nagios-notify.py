@@ -42,6 +42,12 @@ class NagiosNotify:
                 continue
             name = name.removeprefix("NAGIOS_")
             env[name] = value
+
+        if "SERVICEINFOURL" in env:
+            o = urllib.parse.urlparse(env["SERVICEINFOURL"])
+            path = o.path.replace("extinfo.cgi", "cmd.cgi")
+            env["SERVICECMDURL"] = f"{o.scheme}://{o.netloc}{path}?{o.query}"
+
         return env
 
     def get_template(self, filename: str):
