@@ -25,4 +25,9 @@ You should use this package because:
 All `NAGIOS_*` [environment variables][macrolist] exported by Naguis are
 available as variables in templates without the `NAGIOS_` prefix.
 
+Additionally, this project adds few more variables:
+- `DATADIR`: a path to `/usr/share/nagios`
+- `TEMPLATEDIR`: a path to `/etc/nagios/templates`
+- `SERVICECMDURL` points to `cmd.cgi`
+
 [macrolist]: https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/macrolist.html
