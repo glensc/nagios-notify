@@ -19,3 +19,10 @@ You should use this package because:
   you use nagios-notify-jabber
 - minimal dependency (just coreutils and awk that you most likely already have
   installed)
+
+## Variables
+
+All `NAGIOS_*` [environment variables][macrolist] exported by Naguis are
+available as variables in templates without the `NAGIOS_` prefix.
+
+[macrolist]: https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/macrolist.html
