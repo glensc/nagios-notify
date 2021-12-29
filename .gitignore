@@ -1,3 +1,5 @@
+/.direnv
+/.envrc.local
 /.idea/
 /ChangeLog
 /nagios-notify-*.tar.xz
