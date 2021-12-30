@@ -40,6 +40,13 @@
           "title": "Service",
           "value": "<{{ SERVICEINFOURL }}|{{ SERVICEDESC }}>",
           "short": true
+{% if SERVICESTATE != "OK" %}
+        },
+        {
+          "title": "🔻",
+          "value": "<{{ SERVICECMDURL }}&cmd_typ=56|Schedule Downtime>",
+          "short": true
+{% endif %}
         }
       ]
     }
