@@ -39,7 +39,7 @@ class NagiosNotify:
         for name, value in os.environ.items():
             if not name.startswith("NAGIOS_"):
                 continue
-            name = name.removeprefix("NAGIOS_")
+            name = name[len("NAGIOS_"):]
             env[name] = value
 
         if "SERVICEINFOURL" in env:
