@@ -31,3 +31,9 @@ Additionally, this project adds few more variables:
 - `SERVICECMDURL` points to `cmd.cgi`
 
 [macrolist]: https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/macrolist.html
+
+## Similar projects
+
+- https://github.com/isi-usc-edu/NagiosNotify
+- https://github.com/isaac-galvan/nagios-teams-notify
+- https://github.com/obaarne/Nagios2Slack
